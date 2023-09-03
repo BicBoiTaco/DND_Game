@@ -5,10 +5,12 @@ import random
 # Import to allow pauses
 import time
 
+
 # Available inputs
 attack_input = ['attack', 'atk', 'a', 'fight']
 defend_input = ['block', 'defend', 'evade', 'b', 'shield', 'use shield']
 
+player_name = "Jacob"
 # Available class
 
 
@@ -27,39 +29,39 @@ class Ranger:
 # Set dice roll functions
 
 # 100 sided dice roll
-def d100():
+def d100(dice_amount):
     # Pick random number between 1 and 100
-    total = random.randint(1, 100)
+    total = dice_amount * (random.randint(1, 100))
     return total
 
 # 20 sided dice roll
-def d20():
+def d20(dice_amount):
     # Pick random number between 1 and 20
-    total = random.randint(1, 20)
+    total = dice_amount * random.randint(1, 20)
     return total
 
 # 12 sided dice roll
-def d12():
+def d12(dice_amount):
     # Pick random number between 1 and 12
-    total = random.randint(1, 12)
+    total = dice_amount * random.randint(1, 12)
     return total
 
 # 8 sided dice roll
-def d8():
+def d8(dice_amount):
     # Pick random number between 1 and 8
-    total = random.randint(1, 8)
+    total = dice_amount * random.randint(1, 8)
     return total
 
 # 6 sided dice roll
-def d6():
+def d6(dice_amount):
     # Pick random number between 1 and 6
-    total = random.randint(1, 6)
+    total = dice_amount * random.randint(1, 6)
     return total
 
 # 4 sided dice roll
-def d4():
+def d4(dice_amount):
     # Pick random number between 1 and 4
-    total = random.randint(1, 4)
+    total = dice_amount * random.randint(1, 4)
     return total
 
 # Define Attack Function
@@ -87,61 +89,56 @@ def attack(self, target):
         print("The attack missed...")
     time.sleep(1.5)
 
-#Define Fight Begin Function
-def battle(prompt):
-    # Infinite Loop
-    while True:
-        ...
+def attack_turn(self, target):
+    # Announce who's turn it is
+    print(str(self.name) + "s turn")
+    # Let Player Read
+    time.sleep(1.5)
+    # Run attack function based on self and target defined above
+    attack(self, target)
+    if self.health >= 0:
+        print(str(target.name) + " has been defeated in battle")
+        # Check if target or self died
+    elif target.health >= 0:
+        print(str(self.name), " has perished in their own attack.")
 
 
 # Start Temp Test Code
-class Player:
-    base_health = random.randint(18, 22)
-    base_atk = random.randint(1, 20) + 1
-    base_dmg = random.randint(1, 6)
-    def __init__(self):
-        self.health = self.base_health
+
+class Creature():
+    ...
+
+class Player(Creature):
+    def __init__(self, name):
+        self.name = name
+        self.health = 20
         self.ac = 10
-        self.atk = self.base_atk
-        self.dmg = self.base_dmg
+        self.atk = d20(1) + 2
+        self.dmg = d6(1)
+        self.initiative = 4
 
-class Zombie:
-    base_health = random.randint(9, 11)
-    base_atk = random.randint(1, 20)
-    base_dmg = random.randint(1, 4)
-    def __init__(self):
-        self.health = self.base_health
+
+
+class Zombie(Creature):
+    def __init__(self, name):
+        self.name = name
+        self.health = random.randint(9, 11)
         self.ac = 9
-        self.atk = self.base_atk
-        self.dmg = self.base_dmg
+        self.atk = d20(1)
+        self.dmg = d4(1)
         self.xp = 20
+        self.initiative = (d4(1) + 3)
 
-player = Player()
 
-zombie = Zombie()
 
-# Battle loop
-while player.health > 0 and zombie.health > 0:
-    # Player's turn to attack
-    print("Player's turn:")
-    # Let Player read
-    time.sleep(1.5)
-    attack(player, zombie)
+# Turn order list
+active_players = 1
+present_creatures = [Player("Jacob"), Zombie("Zombie1"), Zombie("Zombie2")]
 
-    # Check if the zombie is defeated after player's attack
-    if zombie.health <= 0:
-        print("Zombie is defeated!")
-        break
+sorted_turns = sorted(present_creatures, key=lambda creature: creature.initiative, reverse=True)
+new_turn = 0
 
-    # Zombie's turn to attack
-    print("Zombie's turn:")
-    # Let Player read
-    time.sleep(1.5)
-    attack(zombie, player)
-
-    # Check if the player is defeated after zombie's attack
-    if player.health <= 0:
-        print("Player is defeated!")
-        break
-# End Temp Test Code
-# Initialize Enemy Class
+for i in sorted_turns:
+    if new_turn < len(sorted_turns):
+        print(sorted_turns[new_turn].name)
+        new_turn += 1
