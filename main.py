@@ -89,20 +89,6 @@ def attack(self, target):
         print("The attack missed...")
     time.sleep(1.5)
 
-def attack_turn(self, target):
-    # Announce who's turn it is
-    print(str(self.name) + "s turn")
-    # Let Player Read
-    time.sleep(1.5)
-    # Run attack function based on self and target defined above
-    attack(self, target)
-    if self.health >= 0:
-        print(str(target.name) + " has been defeated in battle")
-        # Check if target or self died
-    elif target.health >= 0:
-        print(str(self.name), " has perished in their own attack.")
-
-
 # Start Temp Test Code
 
 class Creature():
@@ -142,3 +128,20 @@ for i in sorted_turns:
     if new_turn < len(sorted_turns):
         print(sorted_turns[new_turn].name)
         new_turn += 1
+
+def attack_turn(self, target):
+    for i in sorted_turns:
+        if new_turn < len(sorted_turns):
+            # Announce who's turn it is
+            print(str(self.name) + "s turn")
+            # Let Player Read
+            time.sleep(1.5)
+            # Run attack function based on self and target defined above
+            attack(self, target)
+            if self.health >= 0:
+                print(str(target.name) + " has been defeated in battle")
+                # Check if target or self died
+            elif target.health >= 0:
+                print(str(self.name), " has perished in their own attack.")
+            new_turn += 1
+
