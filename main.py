@@ -118,30 +118,95 @@ class Zombie(Creature):
 
 
 # Turn order list
+
+# Amount of players in game
 active_players = 1
+
+# All creatures in vicinity
 present_creatures = [Player("Jacob"), Zombie("Zombie1"), Zombie("Zombie2")]
 
+# Sort all creatures in vicinity by initiative
 sorted_turns = sorted(present_creatures, key=lambda creature: creature.initiative, reverse=True)
-new_turn = 0
 
-for i in sorted_turns:
-    if new_turn < len(sorted_turns):
-        print(sorted_turns[new_turn].name)
-        new_turn += 1
+# Set the current turn as zero since nothing has happened yet
+current_turn = 0
 
-def attack_turn(self, target):
+# Progress turn to next
+def next_turn():
+
+    # get the variable "current_turn" and allow it to be changed globally during this function
+    global current_turn
+
+    # Set turn to next turn by adding 1
+    current_turn += 1
+
+    # If the current turn has passed existing creatures (All players and creatures have had a turn) then reset it
+    # to zero allowing the first person to go again
+    if current_turn > len(present_creatures):
+        new_turn = 0
+
+
+# Function to allow a player to choose who they want to target
+def choose_target_player():
+    # Infinite loop to ensure we get the correct value from player
+    while True:
+        try:
+
+            # Ask player who they would like to target
+            chosen_target = int(input("Who do you target?"))
+
+            # Return players input value
+            return sorted_turns[chosen_target]
+
+        except ValueError:
+
+            # Player did not enter numerical value. Try again
+            print("Please enter the number corresponding to a valid target")
+
+        else:
+            break
+
+
+def attack_turn_player():
+    # Declare self as the current turn corresponding to present_creatures list
+    self = present_creatures[current_turn]
+
+    # Announce who's turn it is
+    print(str(self.name) + " turn")
+
+    # Select target to attack
+    target = choose_target_player()
+
+    # Declare attacker and target to player
+    print(self.name, "attacks", target.name)
+
+    # Let Player Read
+    time.sleep(1)
+
+    # Run attack function based on self and target defined above
+    attack(self, target)
+
+    # Show target health to player
+    print(target.name, "health is", target.health)
+
+    # Let Player Read
+    time.sleep(1)
+
+    # Check if target or self died
+    if self.health <= 0:
+        print(str(target.name) + " has been defeated in battle")
+
+    elif target.health <= 0:
+        print(str(self.name), " has perished in their own attack.")
+
+    # Next turn
+    next_turn()
+
+    # Temporary Function to show present creatures in order of turn
+def temp_target_name_output(current_turn=current_turn):
     for i in sorted_turns:
-        if new_turn < len(sorted_turns):
-            # Announce who's turn it is
-            print(str(self.name) + "s turn")
-            # Let Player Read
-            time.sleep(1.5)
-            # Run attack function based on self and target defined above
-            attack(self, target)
-            if self.health >= 0:
-                print(str(target.name) + " has been defeated in battle")
-                # Check if target or self died
-            elif target.health >= 0:
-                print(str(self.name), " has perished in their own attack.")
-            new_turn += 1
+        print(sorted_turns[current_turn].name)
+        current_turn += 1
 
+temp_target_name_output()
+attack_turn_player()
