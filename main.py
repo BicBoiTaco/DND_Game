@@ -91,7 +91,7 @@ def attack(self, target):
 
 # Start Temp Test Code
 
-class Creature():
+class Creature:
     def __init__(self):
         self.block = False
 
@@ -106,7 +106,6 @@ class Player(Creature):
         self.initiative = 4
 
 
-
 class Zombie(Creature):
     def __init__(self, name):
         super().__init__()
@@ -119,17 +118,17 @@ class Zombie(Creature):
         self.initiative = (d4(1) + 3)
 
 
-current_players = Player("Jacob ")
+current_players = [Player("Jacob")]
 # Turn order list
 
 # Amount of players in game
 active_players = 1
 
 # Allies
-ally_list = [current_players]
+ally_list = current_players
 
 # Enemies
-enemy_list = [Zombie("Zombie "), Zombie("Zombie ")]
+enemy_list = [Zombie("Zombie"), Zombie("Zombie")]
 
 # All creatures in vicinity
 present_creatures = ally_list + enemy_list
@@ -153,7 +152,7 @@ def next_turn():
     # If the current turn has passed existing creatures (All players and creatures have had a turn) then reset it
     # to zero allowing the first person to go again
     if current_turn > len(present_creatures):
-        new_turn = 0
+        current_turn = 0
 
 
 # Function to allow a player to choose who they want to target
@@ -166,15 +165,12 @@ def choose_target_player():
             chosen_target = int(input("Who do you target?"))
 
             # Return players input value
-            return sorted_turns[chosen_target]
+            return sorted_creatures[chosen_target]
 
         except ValueError:
 
             # Player did not enter numerical value. Try again
             print("Please enter the number corresponding to a valid target")
-
-        else:
-            break
 
 
 def attack_turn_player():
@@ -224,17 +220,30 @@ def choose_action(self):
     else:
         ...
 
-    # Temporary Function to show present creatures in order of turn
-def battle(current_turn=current_turn):
-    for i in sorted_turns:
-        sorted_turns[current_turn].name = sorted_turns[current_turn].name + "[" + str(current_turn) + "]"
-        print(sorted_turns[current_turn].name, "HP =", sorted_turns[current_turn].health)
-        current_turn += 1
-        while ally_list != 0 and enemy_list != 0:
-            self = sorted_turns[current_turn]
-            print(f"{self}'s turn!")
-            chosen_action = choose_action(self)
+def display_vicinity_creatures():
+    # Set Identifier
+    identifier = 0
+    # For every creature in the vicinity
+    for i in sorted_creatures:
+
+        # Add identifier to all creatures on battlefield via numbers
+
+        sorted_creatures[identifier].name = sorted_creatures[identifier].name + "[" + str(identifier) + "]"
+
+        # Display sorted creatures with identifying numbers and health
+
+        print(sorted_creatures[identifier].name, "HP =", sorted_creatures[identifier].health)
+
+        # Go to next turn allowing the identifying number to increase as the
+
+        identifier += 1
+
+def battle():
+    display_vicinity_creatures()
+    while ally_list != 0 and enemy_list != 0:
+        self = sorted_creatures[current_turn]
+        print(f"{self}'s turn!")
+        chosen_action = choose_action(self)
 
 
-
-
+display_vicinity_creatures()
