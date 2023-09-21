@@ -92,10 +92,12 @@ def attack(self, target):
 # Start Temp Test Code
 
 class Creature():
-    ...
+    def __init__(self):
+        self.block = False
 
 class Player(Creature):
     def __init__(self, name):
+        super().__init__()
         self.name = name
         self.health = 20
         self.ac = 10
@@ -107,6 +109,7 @@ class Player(Creature):
 
 class Zombie(Creature):
     def __init__(self, name):
+        super().__init__()
         self.name = name
         self.health = random.randint(9, 11)
         self.ac = 9
@@ -116,17 +119,24 @@ class Zombie(Creature):
         self.initiative = (d4(1) + 3)
 
 
-
+current_players = Player("Jacob ")
 # Turn order list
 
 # Amount of players in game
 active_players = 1
 
+# Allies
+ally_list = [current_players]
+
+# Enemies
+enemy_list = [Zombie("Zombie "), Zombie("Zombie ")]
+
 # All creatures in vicinity
-present_creatures = [Player("Jacob"), Zombie("Zombie1"), Zombie("Zombie2")]
+present_creatures = ally_list + enemy_list
 
 # Sort all creatures in vicinity by initiative
-sorted_turns = sorted(present_creatures, key=lambda creature: creature.initiative, reverse=True)
+sorted_creatures = sorted(present_creatures, key=lambda creature: creature.initiative, reverse=True)
+
 
 # Set the current turn as zero since nothing has happened yet
 current_turn = 0
@@ -202,11 +212,29 @@ def attack_turn_player():
     # Next turn
     next_turn()
 
-    # Temporary Function to show present creatures in order of turn
-def temp_target_name_output(current_turn=current_turn):
-    for i in sorted_turns:
-        print(sorted_turns[current_turn].name)
-        current_turn += 1
 
-temp_target_name_output()
-attack_turn_player()
+def choose_action(self):
+    if self in active_players:
+        try:
+            return str(input("What would you like to do?"))
+        except ValueError:
+            print("Please input valid action")
+    elif self in ally_list:
+        ...
+    else:
+        ...
+
+    # Temporary Function to show present creatures in order of turn
+def battle(current_turn=current_turn):
+    for i in sorted_turns:
+        sorted_turns[current_turn].name = sorted_turns[current_turn].name + "[" + str(current_turn) + "]"
+        print(sorted_turns[current_turn].name, "HP =", sorted_turns[current_turn].health)
+        current_turn += 1
+        while ally_list != 0 and enemy_list != 0:
+            self = sorted_turns[current_turn]
+            print(f"{self}'s turn!")
+            chosen_action = choose_action(self)
+
+
+
+
