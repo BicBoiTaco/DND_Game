@@ -156,13 +156,15 @@ def next_turn():
 
 
 # Function to allow a player to choose who they want to target
-def choose_target_player():
+def choose_target(self,choice):
     # Infinite loop to ensure we get the correct value from player
     while True:
         try:
 
             # Ask player who they would like to target
             chosen_target = int(input("Who do you target?"))
+            if chosen_target >= len(sorted_creatures):
+                attack(self,chosen_target)
 
             # Return players input value
             return sorted_creatures[chosen_target]
@@ -181,7 +183,7 @@ def attack_turn_player():
     print(str(self.name) + " turn")
 
     # Select target to attack
-    target = choose_target_player()
+    target = choose_target()
 
     # Declare attacker and target to player
     print(self.name, "attacks", target.name)
@@ -210,9 +212,12 @@ def attack_turn_player():
 
 
 def choose_action(self):
-    if self in active_players:
+    if self in current_players:
         try:
-            return str(input("What would you like to do?"))
+            choice = str(input("What would you like to do?"))
+            if choice in attack_input:
+                attack()
+
         except ValueError:
             print("Please input valid action")
     elif self in ally_list:
@@ -226,17 +231,14 @@ def display_vicinity_creatures():
     # For every creature in the vicinity
     for i in sorted_creatures:
 
-        # Add identifier to all creatures on battlefield via numbers
-
-        sorted_creatures[identifier].name = sorted_creatures[identifier].name + "[" + str(identifier) + "]"
-
         # Display sorted creatures with identifying numbers and health
 
-        print(sorted_creatures[identifier].name, "HP =", sorted_creatures[identifier].health)
+        print(sorted_creatures[identifier].name + "[" + str(identifier) + "]", "HP =", sorted_creatures[identifier].health)
 
         # Go to next turn allowing the identifying number to increase as the
 
         identifier += 1
+
 
 def battle():
     display_vicinity_creatures()
@@ -246,4 +248,4 @@ def battle():
         chosen_action = choose_action(self)
 
 
-display_vicinity_creatures()
+choose_action(Player("Jacob"))
