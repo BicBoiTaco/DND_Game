@@ -118,7 +118,10 @@ class Zombie(Creature):
         self.initiative = (d4(1) + 3)
 
 
-current_players = [Player("Jacob")]
+Jacob = Player("Jacob")
+
+
+current_players = [Jacob]
 # Turn order list
 
 # Amount of players in game
@@ -213,13 +216,17 @@ def attack_turn_player():
 
 def choose_action(self):
     if self in current_players:
-        try:
-            choice = str(input("What would you like to do?"))
-            if choice in attack_input:
-                attack()
-
-        except ValueError:
-            print("Please input valid action")
+        while True:
+            try:
+                choice = str(input("What would you like to do?\nAttack\nBlock\nBlank\nBlank\n"))
+                if choice in attack_input:
+                    print("Hey look at you")
+                    attack()
+                    break
+                else:
+                    print("\nPlease Input Valid Action\n")
+            except ValueError:
+                print("\nPlease input valid action\n")
     elif self in ally_list:
         ...
     else:
@@ -248,4 +255,4 @@ def battle():
         chosen_action = choose_action(self)
 
 
-battle()
+choose_action(Jacob)
