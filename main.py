@@ -244,8 +244,8 @@ def battle():
     display_vicinity_creatures()
     while ally_list != 0 and enemy_list != 0:
         self = sorted_creatures[current_turn]
-        print(f"{self}'s turn!")
+        print(f"{self.name}'s turn!")
         chosen_action = choose_action(self)
 
 
-choose_action(Player("Jacob"))
+battle()
